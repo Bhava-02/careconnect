@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const dns = require("dns");
+const path = require("path");
 dns.setServers(["8.8.8.8", "1.1.1.1"]); // use Google/Cloudflare DNS so the Atlas address can be found
 
 // Database address: MongoDB Atlas (cloud).
@@ -429,7 +430,10 @@ app.put("/api/notifications/read", async (req, res) => {
   await Notification.updateMany({ user: req.body.user, read: false }, { read: true });
   res.json({ message: "Marked as read" });
 });
-
+// ---------------- WEBSITE PAGES (for hosting online) ----------------
+// "npm run build" puts the React pages in client/dist. The server sends them too,
+// so the whole app (pages + API) works from one link.
+app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 // Any error inside a route is sent back as a JSON message
 app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
@@ -512,4 +516,5 @@ function nextWorkingDay(doctor, n) {
   return d.toLocaleDateString("en-CA"); // YYYY-MM-DD
 }
 
-app.listen(5000, () => console.log("Server running on http://localhost:5000"));
+const PORT = process.env.PORT || 5000; // Render gives its own port number
+app.listen(PORT, () => console.log("Server running on port " + PORT));
