@@ -122,3 +122,6 @@ A doctor added directly in the database has no password, so they cannot sign in.
 To start again with fresh sample data: in Compass, delete the `careconnect_portal` database and restart the backend.
 
 The Poppins font loads from Google Fonts when there is internet; without internet the app uses Segoe UI.
+## Team
+   - Bhavanitha Velusamy
+   - Madhumitha Saravanan
